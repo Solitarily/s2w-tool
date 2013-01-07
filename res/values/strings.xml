@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">S2WTool</string>
-    <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="sweep2wake_change">Turn sweep2wake on or off:</string>
+    <string name="no_sweep2wake">Error: sweep2wake can\'t be found.</string>
 
 </resources>

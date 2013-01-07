@@ -9,6 +9,7 @@ public class ApplyChanges extends Thread{
 	private Set<ChangesAppliedListener> listeners = new CopyOnWriteArraySet<ChangesAppliedListener>();
 	private boolean enabled;
 	private boolean getStatus;
+	private boolean firstCheck;
 	public ApplyChanges(boolean enabled)
 	{
 		this.enabled = enabled;
@@ -18,9 +19,23 @@ public class ApplyChanges extends Thread{
 	{
 		this.getStatus = true;
 	}
+	public void setFirstCheck(boolean first)
+	{
+		this.firstCheck = first;
+	}
 	@Override
 	public void run() {
 		String res = "";
+		if(this.firstCheck)
+		{
+			String[] command = {"su", "-c", "ls /sys/android_touch/"};
+			String comp = ShellCommand.run(command);
+			if(comp.indexOf("sweep2wake") == -1)
+			{
+				notifyListeners(1);
+				return;
+			}
+		}
 		try
 		{
 			String[] command = {"ls", "-a", Environment.getExternalStorageDirectory().getPath()};
@@ -72,6 +87,11 @@ public class ApplyChanges extends Thread{
 	{
 		for(ChangesAppliedListener listener : listeners)
 			listener.changesApplied(this, enabled);
+	}
+	public final void notifyListeners(int error)
+	{
+		for(ChangesAppliedListener listener : listeners)
+			listener.changesApplied(this, error);
 	}
 	
 
