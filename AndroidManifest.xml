@@ -7,6 +7,7 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +23,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".S2WToolService" android:label="S2WToolService">
+		    <intent-filter>
+			        <action android:name="info.corne.S2WToolService" />
+			</intent-filter>
+		</service>
+		
+		<receiver
+		    android:name=".OnBoot"
+		    android:enabled="true"
+		    android:exported="true"
+		    android:label="OnBoot">
+		    <intent-filter>
+		        <action android:name="android.intent.action.BOOT_COMPLETED" />
+		    </intent-filter>
+		</receiver>
     </application>
+   
 
 </manifest>
